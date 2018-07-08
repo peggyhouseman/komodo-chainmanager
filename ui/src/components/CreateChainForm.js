@@ -7,7 +7,29 @@ const mapDispatchToProps = dispatch => {
     createChain: chain => dispatch(createChain(chain))
   };
 };
-
+/*
+const validate = values => {
+  const errors = {}
+  if (!values.username) {
+    errors.username = 'Required'
+  } else if (values.username.length > 15) {
+    errors.username = 'Must be 15 characters or less'
+  }
+  if (!values.email) {
+    errors.email = 'Required'
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address'
+  }
+  if (!values.age) {
+    errors.age = 'Required'
+  } else if (isNaN(Number(values.age))) {
+    errors.age = 'Must be a number'
+  } else if (Number(values.age) < 18) {
+    errors.age = 'Sorry, you must be at least 18 years old'
+  }
+  return errors
+}
+*/
 class CreateChainForm extends Component {
   constructor() {
     super();
@@ -19,19 +41,25 @@ class CreateChainForm extends Component {
       halvingBlock: '',
       decreaseRewardsPercent: '',
       address: '',
-      addressRewardPercent: ''
+      addressRewardPercent: '',
+      makeRewardsFieldsReadonly: true
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
-    this.setState({[event.target.name]: event.target.value});
+    let state = {[event.target.name]: event.target.value};
+    if (event.target.name === "reward" && event.target.value && event.target.value.length > 0) {
+      state = { ...state, halvingBlock: '', decreaseRewardsPercent: '', makeRewardsFieldsReadonly: false  };
+    } else {
+      state = { ...state, makeRewardsFieldsReadonly: true  };
+    }
+    this.setState(state);
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state);
     const chain = {
       name: this.state.name,
       supply: this.state.supply,
@@ -42,10 +70,8 @@ class CreateChainForm extends Component {
       address: this.state.address,
       addressRewardPercent: this.state.addressRewardPercent
     };
-    console.log(this.props);
     this.props.createChain(chain);
     this.setState({ chain });
-    console.log(this.state);
   }
 
     render() {
@@ -65,13 +91,13 @@ class CreateChainForm extends Component {
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label htmlFor="name">Coin Name / Ticker Symbol</label>
-                        <input type="text" className="form-control" id="name" name="name" value={this.state.name} onChange={this.handleChange}/>
+                        <input type="text" className="form-control" id="name" name="name" value={this.state.name} onChange={this.handleChange} required/>
                       </div>
                     </div>
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label htmlFor="supply">Total Supply</label>
-                        <input type="text" className="form-control" id="supply" name="supply" value={this.state.supply} onChange={this.handleChange} />
+                        <input type="number" className="form-control" id="supply" name="supply" value={this.state.supply} onChange={this.handleChange} required/>
                       </div>
                     </div>
                   </div>
@@ -87,21 +113,21 @@ class CreateChainForm extends Component {
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label htmlFor="mining-reward">Mining reward in Satoshis</label>
-                        <input type="text" className="form-control" id="mining-reward" name="reward" value={this.state.reward} onChange={this.handleChange} />
+                        <input type="number" className="form-control" id="mining-reward" name="reward" value={this.state.reward} onChange={this.handleChange} />
                       </div>
                       <div className="form-group">
                         <label htmlFor="end-rewards">Height of block when rewards will end</label>
-                        <input type="text" className="form-control" id="end-rewards" name="endBlock" value={this.state.endBlock} onChange={this.handleChange} />
+                        <input type="number" className="form-control" id="end-rewards" name="endBlock" value={this.state.endBlock} onChange={this.handleChange} />
                       </div>
                     </div>
                     <div className="col-sm-6">
                       <div className="form-group">
                         <label htmlFor="halving">Number of blocks until rewards halved</label>
-                        <input type="text" className="form-control" id="halving" name="halvingBlock" value={this.state.halvingBlock} onChange={this.handleChange} />
+                        <input type="number" className="form-control" id="halving" name="halvingBlock" value={this.state.halvingBlock} onChange={this.handleChange} readOnly={this.state.makeRewardsFieldsReadonly}/>
                       </div>
                       <div className="form-group">
                         <label htmlFor="decrease-rewards">Rewards percent decrease with each halving</label>
-                        <input type="text" className="form-control" id="decrease-rewards" name="decreaseRewardsPercent" value={this.state.decreaseRewardsPercent} onChange={this.handleChange} />
+                        <input type="number" className="form-control" id="decrease-rewards" name="decreaseRewardsPercent" value={this.state.decreaseRewardsPercent} onChange={this.handleChange} readOnly={this.state.makeRewardsFieldsReadonly}/>
                       </div>
                     </div>
                   </div>
@@ -116,7 +142,7 @@ class CreateChainForm extends Component {
                     </div>
                     <div className="form-group">
                       <label htmlFor="address-rewards">Percent added to rewards to be sent to Public Key Address</label>
-                      <input type="text" className="form-control" id="address-rewards" name="addressRewardPercent" value={this.state.addressRewardPercent} onChange={this.handleChange} />
+                      <input type="number" className="form-control" id="address-rewards" name="addressRewardPercent" value={this.state.addressRewardPercent} onChange={this.handleChange} />
                     </div>
                   </div>
                 </div>

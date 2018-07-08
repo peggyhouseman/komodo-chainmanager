@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Route, Link } from 'react-router-dom';
+import CreateChain from './CreateChainForm';
 
 class NoChain extends Component {
     render () {
@@ -9,8 +11,13 @@ class NoChain extends Component {
                 <hr className="my-4" />
                 <p>Getting started is easy.  Generate your own blockchain in just a few seconds.</p>
                 <p className="lead">
-                  <a className="btn btn-primary btn-lg" href="/" role="button">Create Chain</a>
+                    <Link to="/create-chain" className="btn btn-primary btn-lg">Create Chain</Link>
                 </p>
+
+                <main>
+                    <Route exact path="/create-chain" component={CreateChain} />
+                </main>
+                
             </div>
         )
     }

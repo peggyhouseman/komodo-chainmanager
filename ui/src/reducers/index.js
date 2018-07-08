@@ -1,17 +1,12 @@
-import { CREATE_CHAIN } from "../constants/action-types";
+import { combineReducers } from "redux";
+import { reducer as formReducer } from "redux-form";
+import { routerReducer } from 'react-router-redux'
+import createChainReducer from './create-chain-reducer';
 
-const initialState = {
-    chains: []
-};
-
-const rootReducer = (state = initialState, action) => {
-    switch (action.type) {
-      case CREATE_CHAIN:
-        console.log(action);
-        return { ...state, chains: [...state.chains, action.payload] };
-      default:
-        return state;
-    }
-};
+const rootReducer = combineReducers({
+    createChainReducer,
+    form: formReducer,
+    routing: routerReducer
+});
 
 export default rootReducer;
