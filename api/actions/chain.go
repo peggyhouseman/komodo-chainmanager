@@ -47,7 +47,7 @@ func CreateChain(execLocation string) buffalo.Handler {
 
 		// TODO check for existence
 
-		cmd := fmt.Sprintf("%s/komodod -ac_name=%s -ac_supply=%d -gen &", execLocation, chain.Name, chain.Supply)
+		cmd := fmt.Sprintf("%s/komodod -ac_name=%s -ac_supply=%d", execLocation, chain.Name, chain.Supply)
 
 		if chain.Reward > 0 {
 			cmd = cmd + fmt.Sprintf(" -ac_reward=%d", chain.Reward)
@@ -67,11 +67,12 @@ func CreateChain(execLocation string) buffalo.Handler {
 		if chain.PubicKeyAddressRewardPercent > 0 {
 			cmd = cmd + fmt.Sprintf(" -ac_perc=%d", chain.PubicKeyAddressRewardPercent)
 		}
+		cmd = cmd + " -gen &"
 
 		cmdError := exec.Command("bash", "-c", cmd).Run()
 
 		if cmdError != nil {
-			// log error
+			// TODO log error
 			return c.Render(http.StatusInternalServerError, r.String("error creating chain"))
 		}
 

@@ -42,8 +42,7 @@ func App() *buffalo.App {
 			app.Use(middleware.ParameterLogger)
 		}
 
-		// should be env variable/config as part of deploy
-		execLocation := "/Users/phouseman/komodo/src"
+		execLocation := envy.Get("KOMODO_PATH", "")
 
 		app.GET("/health", Health())
 		app.GET("/chain/{name}", GetChainInfo(execLocation))

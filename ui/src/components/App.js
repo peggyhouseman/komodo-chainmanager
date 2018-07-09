@@ -23,6 +23,7 @@ class App extends Component {
   }
 }
 
+// TODO - Asset Chain list component
 const Main = () => (
   <Switch>
       <Route path='/create-chain' component={CreateChain}></Route>

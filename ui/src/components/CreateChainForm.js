@@ -7,29 +7,7 @@ const mapDispatchToProps = dispatch => {
     createChain: chain => dispatch(createChain(chain))
   };
 };
-/*
-const validate = values => {
-  const errors = {}
-  if (!values.username) {
-    errors.username = 'Required'
-  } else if (values.username.length > 15) {
-    errors.username = 'Must be 15 characters or less'
-  }
-  if (!values.email) {
-    errors.email = 'Required'
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address'
-  }
-  if (!values.age) {
-    errors.age = 'Required'
-  } else if (isNaN(Number(values.age))) {
-    errors.age = 'Must be a number'
-  } else if (Number(values.age) < 18) {
-    errors.age = 'Sorry, you must be at least 18 years old'
-  }
-  return errors
-}
-*/
+
 class CreateChainForm extends Component {
   constructor() {
     super();
@@ -42,7 +20,8 @@ class CreateChainForm extends Component {
       decreaseRewardsPercent: '',
       address: '',
       addressRewardPercent: '',
-      makeRewardsFieldsReadonly: true
+      makeRewardsFieldsReadonly: true,
+      submitted: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -60,7 +39,7 @@ class CreateChainForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const chain = {
+    let chain = {
       name: this.state.name,
       supply: this.state.supply,
       reward: this.state.reward,
@@ -71,12 +50,30 @@ class CreateChainForm extends Component {
       addressRewardPercent: this.state.addressRewardPercent
     };
     this.props.createChain(chain);
-    this.setState({ chain });
+    chain.submitted = true;
+    console.log('chain created');
+    console.log(chain);
+    this.setState(chain);
   }
 
     render() {
 
+      if (this.state.submitted) {
+        console.log(this.state);
         return (
+          <div className="jumbotron text-center">
+            <h1 className="text-success">Success!</h1>
+            <hr className="my-4" />
+            <h4 className="lead">
+              Your chain <span className="font-weight-bold">{this.state.name}</span> has been created with a supply of <span className="font-weight-bold">{this.state.supply}</span>
+            </h4>
+          </div>
+        )
+
+      } else {
+
+        return (
+
             <form onSubmit={this.handleSubmit}>
                 <div className="row">
                   <h1 className="display-4">Create Chain</h1>
@@ -153,6 +150,7 @@ class CreateChainForm extends Component {
                 </div>
               </form>
         )
+      }
     }
 }
 

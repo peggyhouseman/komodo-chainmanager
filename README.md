@@ -20,9 +20,6 @@ The app consists of 2 separate applications:
 ### Run Komodo
 * Following these: https://github.com/KomodoPlatform/komodo/wiki/Installing-Komodo-Manually
 ### Run golang API
-* Run buffalo build --static -o /bin/app
-* Goto /bin/
-* Expose desired port (EXPOSE 3025)
-* /bin/app
+* run: buffalo dev
 ### Run UI
 * npm start
