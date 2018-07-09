@@ -12,8 +12,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-func Health(c buffalo.Context) error {
-	return c.Render(200, r.JSON(map[string]string{"message": "Ay ok!"}))
+func Health() buffalo.Handler {
+	return func(c buffalo.Context) error {
+		return c.Render(200, r.JSON(map[string]string{"message": "Ay ok!"}))
+	}
 }
 
 func CreateChain(execLocation string) buffalo.Handler {

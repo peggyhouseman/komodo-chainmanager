@@ -42,8 +42,10 @@ func App() *buffalo.App {
 			app.Use(middleware.ParameterLogger)
 		}
 
+		// should be env variable/config as part of deploy
 		execLocation := "/Users/phouseman/komodo/src"
 
+		app.GET("/health", Health())
 		app.GET("/chain/{name}", GetChainInfo(execLocation))
 		app.POST("/chain", CreateChain(execLocation))
 

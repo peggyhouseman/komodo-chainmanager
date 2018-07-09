@@ -15,6 +15,7 @@ The app consists of 2 separate applications:
 ### Dependencies
 * Komodo: Ensure Komodo daemon is running and available for API calls
 * API: Go must be installed with GOPATH vars correctly set
+* API: Needs the path to the komodod and komodo-cli executables, currently set in App.go
 * UI: nodsjs must be installed
 ### Run Komodo
 * Following these: https://github.com/KomodoPlatform/komodo/wiki/Installing-Komodo-Manually
